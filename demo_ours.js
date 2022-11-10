@@ -78,7 +78,7 @@ export function createDemo(divId) {
         video_gif: null,
 
         texture_idx: 0,
-        motion_idx: 0,
+        motion_idx: 1,
     };
 
     let metadata = null;
@@ -92,7 +92,7 @@ export function createDemo(divId) {
 
     const initTexture = "flames";
     const initVideo = "flames";
-    const initMotion = "right";
+    const initMotion = "up";
 
 
     initMetaData();
@@ -212,7 +212,7 @@ export function createDemo(divId) {
 
 
             }
-            setMotionModel(0);
+            setMotionModel(params.motion_idx);
         }
 
 

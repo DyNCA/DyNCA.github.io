@@ -84,8 +84,8 @@ export function createDemo(divId) {
     };
 
     let metadata = null;
-    // let exp_type = "VectorFieldMotion";
-    let exp_type = "VideoMotion"
+    let exp_type = "VectorFieldMotion";
+    // let exp_type = "VideoMotion"
 
     let gui = null;
     let currentTexture = null;

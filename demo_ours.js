@@ -1,4 +1,4 @@
-import {CA} from './ca_mscale.js'
+import {DyNCA} from './dynca.js'
 
 function isInViewport(element) {
     var rect = element.getBoundingClientRect();
@@ -45,6 +45,8 @@ export function createDemo(divId) {
         }
     }
 
+    gl.disable(gl.DITHER);
+
 
     twgl.addExtensionsToContext(gl);
 
@@ -82,8 +84,8 @@ export function createDemo(divId) {
     };
 
     let metadata = null;
-    let exp_type = "VectorFieldMotion";
-    // let exp_type = "VideoMotion"
+    // let exp_type = "VectorFieldMotion";
+    let exp_type = "VideoMotion"
 
     let gui = null;
     let currentTexture = null;
@@ -125,6 +127,8 @@ export function createDemo(divId) {
                 params.texture_img = texture_images[idx];
             } else {
                 params.modelSet = 'data/video_models/256_video_' + params.model_type + '.json';
+                // params.modelSet = 'data/video_models/128_video_' + params.model_type + '.json';
+                // alert(params.modelSet)
                 params.video_name = video_names[idx];
                 params.video_gif = video_gifs[idx];
             }
@@ -259,7 +263,7 @@ export function createDemo(divId) {
     }
 
     function createCA() {
-        ca = new CA(gl, params.models, [W, H], gui, params.our_version);
+        ca = new DyNCA(gl, params.models, [W, H], gui, params.our_version);
         if (exp_type == "VectorFieldMotion") {
             ca.paint(0, 0, 10000, params.motion_idx, [0.5, 0.5]);
         } else {
@@ -377,7 +381,7 @@ export function createDemo(divId) {
             $("#motion_overlay_icon").style.display = '';
             $("#motion_overlay_grad").style.display = '';
             $("#motion_selector_title").style.display = '';
-            $("#pattern_selector_title").innerHTML = '<span>Textures</span>';
+            $("#pattern_selector_title").innerHTML = '<span>Target Appearance</span>';
 
             $("#origtex").style.display = '';
             $("#texhinttext").style.display = '';
@@ -394,7 +398,7 @@ export function createDemo(divId) {
             $("#motion_overlay_icon").style.display = 'none';
             $("#motion_overlay_grad").style.display = 'none';
             $("#motion_selector_title").style.display = 'none';
-            $("#pattern_selector_title").innerHTML = '<span>Videos</span>';
+            $("#pattern_selector_title").innerHTML = '<span>Target Video</span>';
 
             $("#origtex").style.display = '';
             $("#texhinttext").style.display = '';

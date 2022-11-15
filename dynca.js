@@ -30,8 +30,8 @@ Usage:
 // Maps the position which is in [-1.0, 1.0]
 // to uv which is in [0, 1]
 const vs_code = `
-    attribute vec4 position;
-    varying vec2 uv;
+    attribute highp vec4 position;
+    varying highp vec2 uv;
     void main() {
         uv = position.xy*0.5 + 0.5;
         gl_Position = position;
@@ -50,7 +50,21 @@ function defInput(name) {
 }
 
 const PREFIX = `
+    // #ifdef GL_FRAGMENT_PRECISION_HIGH
+    //     precision highp float;
+    //     precision highp sampler2D;
+    //     precision highp int;
+    // #else
+    //     precision mediump float;
+    //     precision mediump sampler2D;
+    //     precision mediump int;
+    // #endif
+    
     precision highp float;
+    precision highp sampler2D;
+    precision highp int;
+    
+    
 
     // "Hash without Sine" by David Hoskins (https://www.shadertoy.com/view/4djSRW)
     float hash13(vec3 p3) {
@@ -80,8 +94,8 @@ const PREFIX = `
     uniform Tensor u_output;
 
     vec4 _readUV(Tensor tensor, sampler2D tex, vec2 uv) {
-        vec4 v = texture2D(tex, uv);
-        vec2 p = tensor.packScaleZero;
+        highp vec4 v = texture2D(tex, uv);
+        highp vec2 p = tensor.packScaleZero;
         // p.y is the bias
         // p.x is the scaling factor
         // the sampled texture values is between 0.0 and 1.0 (?) 
@@ -99,11 +113,11 @@ const PREFIX = `
         
         #ifdef OURS
             // vec2 p = clamp(pos / tensor.size, 0.0, 1.0 - 1.0 / tensor.size.y); // replicate padding
-            vec2 p = clamp(pos, vec2(0.0, 0.0), tensor.size - 1.0); // replicate padding
+            highp vec2 p = clamp(pos, vec2(0.0, 0.0), tensor.size - 1.0); // replicate padding
             p = p / tensor.size;
             // vec2 p = clamp(pos / tensor.size, 0.0, 1.0 - 0.0 / tensor.size.y); // replicate padding
         #else
-            vec2 p = fract(pos/tensor.size); // circular padding
+            highp vec2 p = fract(pos/tensor.size); // circular padding
         #endif 
         
          
@@ -121,7 +135,7 @@ const PREFIX = `
     }
     vec4 _read(Tensor tensor, sampler2D tex, vec2 pos, float ch) {
         // Returns the correct value of the tensor
-        vec2 p = _getUV(tensor, pos, ch);
+        highp vec2 p = _getUV(tensor, pos, ch);
         return _readUV(tensor, tex, p);
     }
     vec2 getOutputXY() {
@@ -139,38 +153,38 @@ const PREFIX = `
         // Taking the mode with respect to the output size
         // will give us the spatial index in the original tensor
 
-        vec2 xy = mod(gl_FragCoord.xy, u_output.size);  
+        highp vec2 xy = mod(gl_FragCoord.xy, u_output.size);  
         
         return xy;
         
     }
     float getOutputChannel() {
-        vec2 xy = floor(gl_FragCoord.xy/u_output.size);
+        highp vec2 xy = floor(gl_FragCoord.xy/u_output.size);
         return xy.y*u_output.gridSize.x+xy.x;
     }
 
     void setOutput(vec4 v) {
-        vec2 p = u_output.packScaleZero;
+        highp vec2 p = u_output.packScaleZero;
         v = v/p.x + p.y;
         
         #ifndef OURS
             v = clamp(v, -2.0, 2.0);
         #else    
-            // v = clamp(v, -2.0, 2.0);
+            // v = clamp(v, -6.0, 6.0);
         #endif
         gl_FragColor = v;
     }
 
     #ifdef SPARSE_UPDATE
-        uniform sampler2D u_shuffleTex, u_unshuffleTex;
-        uniform vec2 u_shuffleOfs;
+        uniform highp sampler2D u_shuffleTex, u_unshuffleTex;
+        uniform highp vec2 u_shuffleOfs;
     #endif
 
     ${defInput('u_input')}
 
     uniform float u_angle, u_alignment;
     uniform float u_hexGrid;
-    uniform vec2 HW;
+    uniform highp vec2 HW;
     
     mat2 rotate(float ang) {
         float s = sin(ang), c = cos(ang);
@@ -238,7 +252,7 @@ const PROGRAMS = {
             // realXY = texture2D(u_shuffleTex, xy/u_output.size).xy*255.0 + 0.5 + u_shuffleOfs;
             // realXY = texture2D(u_shuffleTex, xy/u_output.size).xy*(HW.x - 1.0) + 0.5 + u_shuffleOfs;
             realXY = texture2D(u_shuffleTex, xy/u_output.size).xy + 0.5 + u_shuffleOfs;
-            realXY = mod(realXY, u_input.size * 2.0);
+            realXY = mod(realXY, HW);
             } 
         #endif
         
@@ -280,9 +294,9 @@ const PROGRAMS = {
     }
     `,
     paint: `
-    uniform vec2 u_pos;
+    uniform highp vec2 u_pos;
     uniform float u_r;
-    uniform vec4 u_brush;
+    uniform highp vec4 u_brush;
     uniform float u_zoom;
 
     void main() {
@@ -304,26 +318,26 @@ const PROGRAMS = {
 
     }`,
     perception: `
-    const mat3 sobelX = mat3(-1.0, 0.0, 1.0, -2.0, 0.0, 2.0, -1.0, 0.0, 1.0)/8.0;
-    const mat3 sobelY = mat3(-1.0,-2.0,-1.0, 0.0, 0.0, 0.0, 1.0, 2.0, 1.0)/8.0;
-    const mat3 gauss = mat3(1.0, 2.0, 1.0, 2.0, 4.0-16.0, 2.0, 1.0, 2.0, 1.0)/8.0;
-    const mat3 sobelXhex = mat3( 0.0,    -1.0, 1.0, 
+    const highp mat3 sobelX = mat3(-1.0, 0.0, 1.0, -2.0, 0.0, 2.0, -1.0, 0.0, 1.0)/8.0;
+    const highp mat3 sobelY = mat3(-1.0,-2.0,-1.0, 0.0, 0.0, 0.0, 1.0, 2.0, 1.0)/8.0;
+    const highp mat3 gauss = mat3(1.0, 2.0, 1.0, 2.0, 4.0-16.0, 2.0, 1.0, 2.0, 1.0)/8.0;
+    const highp mat3 sobelXhex = mat3( 0.0,    -1.0, 1.0, 
                                        -2.0, 0.0, 2.0, 
                                          -1.0, 1.0,        0.0)/8.0;
 
-    const mat3 sobelYhex = mat3( 0.0,    -2.0,-2.0, 
+    const highp mat3 sobelYhex = mat3( 0.0,    -2.0,-2.0, 
                                         0.0, 0.0, 0.0, 
                                           2.0, 2.0,        0.0)/8.0;
 
-    const mat3 gaussHex = mat3(0.0,       2.0, 2.0, 
+    const highp mat3 gaussHex = mat3(0.0,       2.0, 2.0, 
                                        2.0, 4.0-16.0, 2.0, 
                                           2.0, 2.0,        0.0)/8.0;
 
     vec4 conv3x3(vec2 xy, float inputCh, mat3 filter) {
-        vec4 a = vec4(0.0);
+        highp vec4 a = vec4(0.0);
         for (int y=0; y<3; ++y)
         for (int x=0; x<3; ++x) {
-          vec2 p = xy+vec2(float(x-1), float(y-1));
+          highp vec2 p = xy+vec2(float(x-1), float(y-1));
           a += filter[y][x] * u_input_read(p, inputCh);
         }
         return a;
@@ -365,11 +379,11 @@ const PROGRAMS = {
         if (filterBand < 0.5) {
             setOutput(u_input_read(xy, inputCh));
         } else if (filterBand < 2.5) {
-            vec4 dx = conv3x3(xy, inputCh, sobelX*(1.0-u_hexGrid) + sobelXhex*u_hexGrid);
-            vec4 dy = conv3x3(xy, inputCh, sobelY*(1.0-u_hexGrid) + sobelYhex*u_hexGrid);
-            vec2 dir = getCellDirection(xy);
+            highp vec4 dx = conv3x3(xy, inputCh, sobelX*(1.0-u_hexGrid) + sobelXhex*u_hexGrid);
+            highp vec4 dy = conv3x3(xy, inputCh, sobelY*(1.0-u_hexGrid) + sobelYhex*u_hexGrid);
+            highp vec2 dir = getCellDirection(xy);
             float s = dir.x, c = dir.y;
-            vec4 res = filterBand < 1.5 ? dx*c-dy*s : dx*s+dy*c;
+            highp vec4 res = filterBand < 1.5 ? dx*c-dy*s : dx*s+dy*c;
             #ifdef OURS
                 res = res * 8.0; // We didn't normalize the kernels
             #endif
@@ -377,7 +391,7 @@ const PROGRAMS = {
         
         
         } else {
-            vec4 res = conv3x3(xy, inputCh, gauss*(1.0-u_hexGrid) + gaussHex*u_hexGrid);
+            highp vec4 res = conv3x3(xy, inputCh, gauss*(1.0-u_hexGrid) + gaussHex*u_hexGrid);
             #ifdef OURS
                 res = res * 8.0;  // We didn't normalize the kernels
             #endif
@@ -389,26 +403,26 @@ const PROGRAMS = {
     //u_weightTex contains the layer weights
     uniform sampler2D u_weightTex;
     uniform float u_seed, u_fuzz, u_updateProbability;
-    uniform vec2 u_weightCoefs; // scale, center
-    uniform vec2 u_layout;
-    uniform vec2 grid_size;
+    uniform highp vec2 u_weightCoefs; // scale, center
+    uniform highp vec2 u_layout;
+    uniform highp vec2 grid_size;
     uniform bool bias, pos_emb, relu;
     
     const float MAX_PACKED_DEPTH = 50.0;
     
     vec4 readWeightUnscaled(vec2 p) {
-        vec4 w = texture2D(u_weightTex, p);
+        highp vec4 w = texture2D(u_weightTex, p);
         return w-u_weightCoefs.y; // centerize
     }
     
     void main() {
       vec2 xy = getOutputXY();
-      #ifndef SPARSE_UPDATE
-      if (hash13(vec3(xy, u_seed)) > u_updateProbability) {
-        setOutput(vec4(0.0, 0.0, 0.0, 0.0));
-        return;
-      }
-      #endif
+      // #ifndef SPARSE_UPDATE
+      // if (hash13(vec3(xy, u_seed)) > u_updateProbability) {
+      //   setOutput(vec4(0.0, 0.0, 0.0, 0.0));
+      //   return;
+      // }
+      // #endif
       float ch = getOutputChannel();
       if (ch >= u_output.depth4)
           return;
@@ -439,9 +453,9 @@ const PROGRAMS = {
       p.x += floor(mod(modelIdx, u_layout.x));
       p.y += floor(modelIdx/u_layout.x);
       p /= u_layout;
-      vec4 result = vec4(0.0);
+      highp vec4 result = vec4(0.0);
       for (float i=0.0; i < MAX_PACKED_DEPTH; i+=1.0) {
-          vec4 inVec = u_input_read(xy, i);
+          highp vec4 inVec = u_input_read(xy, i);
           result += inVec.x * readWeightUnscaled(p); p.y += dy;
           result += inVec.y * readWeightUnscaled(p); p.y += dy;
           result += inVec.z * readWeightUnscaled(p); p.y += dy;
@@ -452,9 +466,9 @@ const PROGRAMS = {
       }
       if (pos_emb) {
         
-        vec2 pos = floor(realXY);
-        vec2 delta = vec2(0.5, 0.5) / HW;
-        vec2 pemb = pos / HW;
+        highp vec2 pos = floor(realXY);
+        highp vec2 delta = vec2(0.5, 0.5) / HW;
+        highp vec2 pemb = pos / HW;
         pemb = 2.0 * (pemb - 0.5 + delta);
         pemb = rotate(u_angle) * pemb;
         result += pemb.y * readWeightUnscaled(p); p.y += dy;
@@ -485,8 +499,8 @@ const PROGRAMS = {
     //       xy.x -= 1.0;
     //   }
       float ch = getOutputChannel();
-      vec4 state = u_input_read(xy, ch); //u_input_readUV(uv);
-      vec4 update = vec4(0.0);
+      highp vec4 state = u_input_read(xy, ch); //u_input_readUV(uv);
+      highp vec4 update = vec4(0.0);
       #ifdef SPARSE_UPDATE
         vec4 shuffleInfo = texture2D(u_unshuffleTex, fract((xy-u_shuffleOfs)/u_output.size));
         if (shuffleInfo.z > 0.5) {
@@ -564,7 +578,7 @@ const PROGRAMS = {
                 
 
                 #ifdef OURS                                    
-                    rgb = rgb + 0.5;
+                    rgb = clamp(rgb + 0.5, 0.0, 1.0);
                 #else
                     rgb = rgb / 2.0 + 0.5;
                 #endif
@@ -574,7 +588,7 @@ const PROGRAMS = {
             } else {
                 gl_FragColor = texture2D(u_input_tex, xy);
                 #ifdef OURS                    
-                    gl_FragColor = gl_FragColor + 0.5;
+                    gl_FragColor = clamp(gl_FragColor + 0.5, 0.0, 1.0);
                 #else
                     gl_FragColor = gl_FragColor / 2.0 + 0.5;
                 #endif
@@ -592,7 +606,7 @@ const PROGRAMS = {
             }
 
             #ifdef OURS
-                vec3 cellRGB = u_input_read(xy, 0.0).rgb + 0.5;
+                vec3 cellRGB = clamp(u_input_read(xy, 0.0).rgb + 0.5, 0.0, 1.0);
             #else
                 vec3 cellRGB = u_input_read(xy, 0.0).rgb/2.0+0.5;
             #endif
@@ -637,7 +651,7 @@ const PROGRAMS = {
                 }
             } 
 
-            gl_FragColor = vec4(rgb, 1.0);
+            gl_FragColor = vec4(clamp(rgb, 0.0, 1.0), 1.0);
         }
     }`
 }
@@ -715,7 +729,7 @@ function createDenseInfo(gl, params) {
     info.in_n = ch_in;
     info.coefs = [params.scale, center];
 
-    if ("data_flatten" in params && false) {
+    if ("data_flatten" in params) {
         let width = params.data_shape[1];
         let height = params.data_shape[0];
         info.tex = twgl.createTexture(gl, {
@@ -740,19 +754,21 @@ function createDenseInfo(gl, params) {
     return info;
 }
 
-export class CA {
-    constructor(gl, models, gridSize, gui, our_version = false) {
+export class DyNCA {
+    constructor(gl, models, gridSize, gui, our_version = true) {
         // models is basically the json file
 
         self = this;
         this.gl = gl;
 
         this.n_perception_scales = "n_perception_scales" in models ? models.n_perception_scales : 1;
+        // alert(this.n_perception_scales)
 
         this.gridSize = gridSize || [96, 96];
 
         this.updateProbability = 0.5;
         this.shuffledMode = true; // changed
+        // alert(this.shuffledMode)
 
         this.rotationAngle = 0.0;
         this.alignment = 0;
@@ -1006,7 +1022,7 @@ export class CA {
 
     clearCircle(x, y, r, brush, zoom = 1.0) {
         self.runLayer(self.progs.paint, this.buf.state, {
-            u_pos: [x, y], u_r: r, u_brush: [0, 0, 0, 0], u_hexGrid: this.hexGrid, u_zoom: zoom
+            u_pos: [x, y], u_r: r, u_brush: [0.0, 0.0, 0.0, 0.0], u_hexGrid: this.hexGrid, u_zoom: zoom
         });
     }
 

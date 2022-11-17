@@ -972,7 +972,7 @@ export class DyNCA {
         // }
 
         flush();
-        const stepN = 100;
+        const stepN = 500;
         const start = Date.now();
         for (let i = 0; i < stepN; ++i)
             this.step();

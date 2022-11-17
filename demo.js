@@ -110,27 +110,37 @@ export function createDemo(divId) {
 
 
         let texture_names = metadata['texture_names'];
-        let texture_images = metadata['texture_images'];
+        // let texture_images = metadata['texture_images'];
 
         let motion_names = metadata['motion_names'];
         let motion_images = metadata['motion_images'];
 
-        let model_files = metadata['model_files'];
+        // let vec_field_model_files = metadata['vec_field_model_files'];
+        // let video_model_files = metadata['video_model_files'];
 
         let video_names = metadata['video_names'];
-        let video_gifs = metadata['video_gifs'];
+        // let video_appearance_images = metadata['video_appearance'];
+        // let video_gifs = metadata['video_gifs'];
 
         async function setTextureModel(idx) {
             if (exp_type == "VectorFieldMotion") {
-                params.modelSet = model_files[params.model_type][idx]
                 params.texture_name = texture_names[idx];
-                params.texture_img = texture_images[idx];
+                params.texture_img = "images/texture/" + texture_names[idx] + ".jpg"
+                params.modelSet = "data/vec_field_models/" + params.model_type + "/" + texture_names[idx] + ".json"
+                // params.modelSet = vec_field_model_files[params.model_type][idx]
+                // params.texture_img = texture_images[idx];
             } else {
-                params.modelSet = 'data/video_models/256_video_' + params.model_type + '.json';
+                // params.modelSet = 'data/video_models/video_' + params.model_type + '.json';
+                // params.modelSet = 'data/video_models/256_video_' + params.model_type + '.json';
+                // params.modelSet = video_model_files[params.model_type][idx]
                 // params.modelSet = 'data/video_models/128_video_' + params.model_type + '.json';
                 // alert(params.modelSet)
                 params.video_name = video_names[idx];
-                params.video_gif = video_gifs[idx];
+                params.video_gif = "videos/real_gif/" + video_names[idx] + ".gif"
+                params.texture_img = "images/picked_video_frames/" + video_names[idx] + ".png"
+                params.modelSet = "data/video_models/" + params.model_type + "/" + video_names[idx] + ".json"
+                // params.video_gif = video_gifs[idx];
+                // params.texture_img = video_appearance_images[idx];
             }
             params.texture_idx = idx;
             updateUI();
@@ -140,9 +150,20 @@ export function createDemo(divId) {
 
         let len = (exp_type == "VectorFieldMotion") ? texture_names.length : video_names.length;
         for (let idx = 0; idx < len; idx++) {
-            let media_path = (exp_type == "VectorFieldMotion") ? texture_images[idx] : video_gifs[idx];
+            let media_path = "";
+            let texture_name = "";
+            if (exp_type == "VectorFieldMotion") {
+                texture_name = texture_names[idx];
+                media_path = params.texture_img = "images/texture/" + texture_name + ".jpg"
+            } else {
+                texture_name = video_names[idx];
+                media_path = "images/picked_video_frames/" + texture_name + ".png";
+            }
 
-            let texture_name = (exp_type == "VectorFieldMotion") ? texture_names[idx] : video_names[idx];
+            // let media_path = (exp_type == "VectorFieldMotion") ? texture_images[idx] : video_appearance_images[idx];
+            // let media_path = texture_images[idx];
+
+            // let texture_name = (exp_type == "VectorFieldMotion") ? texture_names[idx] : video_names[idx];
             const texture = document.createElement('div');
             texture.style.background = "url('" + media_path + "')";
             texture.style.backgroundSize = "100%100%";
@@ -267,7 +288,8 @@ export function createDemo(divId) {
         if (exp_type == "VectorFieldMotion") {
             ca.paint(0, 0, 10000, params.motion_idx, [0.5, 0.5]);
         } else {
-            ca.paint(0, 0, 10000, params.texture_idx, [0.5, 0.5]);
+            // ca.paint(0, 0, 10000, params.texture_idx, [0.5, 0.5]);
+            ca.paint(0, 0, 10000, 0, [0.5, 0.5]);
         }
 
         ca.clearCircle(0, 0, 1000);
@@ -345,7 +367,7 @@ export function createDemo(divId) {
             $("#origtex").style.backgroundSize = "100%100%";
 
             let oai = document.createElement('p')
-            oai.innerHTML = "Texture Video: " + params.video_name
+            oai.innerHTML = "Target Dynamics: " + params.video_name
             // oai.href = "https://www.bukowskis.com/en/auctions/H042/96-franciska-clausen-contre-composition-composition-neoplasticiste-hommage-a-mondrian";
             $("#texhinttext").innerHTML = '';
             $("#texhinttext").appendChild(oai);
@@ -398,7 +420,7 @@ export function createDemo(divId) {
             $("#motion_overlay_icon").style.display = 'none';
             $("#motion_overlay_grad").style.display = 'none';
             $("#motion_selector_title").style.display = 'none';
-            $("#pattern_selector_title").innerHTML = '<span>Target Video</span>';
+            $("#pattern_selector_title").innerHTML = '<span>Target Appearance</span>';
 
             $("#origtex").style.display = '';
             $("#texhinttext").style.display = '';

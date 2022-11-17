@@ -9,24 +9,25 @@
     <title>DyNCA: Real-Time Dynamic Texture Synthesis Using Neural Cellular Automata</title>
 
 
-
-
-
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
           rel="stylesheet">
 
     <link rel="stylesheet" href="./static/css/bulma.min.css">
-<!--    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">-->
-<!--  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">-->
-  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
     <link rel="stylesheet" href="./static/css/index.css">
-    <link rel="icon" href="./static/images/favicon.svg">
+    <link rel="icon" href="./static/images/favicon.png">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="./static/js/fontawesome.all.min.js"></script>
+
+    <!--    <script src="./static/js/bulma-carousel.min.js"></script>-->
+    <!--    <script src="./static/js/bulma-slider.min.js"></script>-->
+    <!--    <script src="./static/js/index.js"></script>-->
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,6 +41,13 @@
     </script>
     <script type="text/x-mathjax-config">
   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+
+
+
+
+
+
+
 
 
 
@@ -105,7 +113,7 @@
                         <div class="publication-links">
                             <!-- PDF Link. -->
                             <!--                            <span class="link-block">-->
-                            <!--                <a href="https://arxiv.org/pdf/2011.12948"-->
+                            <!--                <a href=""-->
                             <!--                   class="external-link button is-normal is-rounded is-dark">-->
                             <!--                  <span class="icon">-->
                             <!--                      <i class="fas fa-file-pdf"></i>-->
@@ -148,17 +156,34 @@
                 </div>
             </div>
         </div>
+    </div>
 </section>
 
-<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-    <div class="navbar-menu">
+
+<!--<div class="navbar-menu">-->
+<!--        <div class="navbar-start" style="flex-grow: 1; justify-content: center;">-->
+<!--            <a class="navbar-item">-->
+<!--      <span class="icon">-->
+<!--          <i class="fas fa-home"></i>-->
+<!--      </span>-->
+<!--            </a>-->
+
+<!--            <div class="navbar-item has-dropdown is-hoverable">-->
+<!--                <a class="navbar-link" id="select_demo_type">-->
+<!--                    Demo Type: Vector Field Motion-->
+<!--                </a>-->
+<!--                <div class="navbar-dropdown">-->
+<!--                    <a class="navbar-item" id="exp_type_vector_motion"> Motion from a Vector Field</a>-->
+<!--                    <a class="navbar-item" id="exp_type_video_motion"> Motion From a Video</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+
+
+<section class="section is-light">
+    <div class="container is-max-desktop">
         <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
             <a class="navbar-item">
       <span class="icon">
@@ -176,12 +201,15 @@
                 </div>
             </div>
         </div>
-
+        <div class="columns is-centered has-text-centered">
+        </div>
     </div>
-</nav>
+</section>
 
 <section class="hero teaser">
     <div class="container is-max-desktop">
+
+
         <div class="hero-body">
             <div class="l-body-outset grid" id="demo">
                 <div>
@@ -562,8 +590,15 @@
                                                         href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
                     Commons Attribution-ShareAlike 4.0 International License</a>.
                 </p>
+
                 <p>
-                    Website source code based on the <a href="https://nerfies.github.io/"> Nerfies</a> project page. If
+                    Our demo is built upon the source code of<a href="https://distill.pub/selforg/2021/textures/">
+                    Self-Organizing Textures</a> paper on distill.
+                </p>
+
+                <p>
+                    Website source code is based on the <a href="https://nerfies.github.io/"> Nerfies</a> project page.
+                    If
                     you want to reuse their <a href="https://github.com/nerfies/nerfies.github.io">source code</a>,
                     please credit them appropriately.
                 </p>

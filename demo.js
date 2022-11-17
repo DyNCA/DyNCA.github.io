@@ -62,7 +62,7 @@ export function createDemo(divId) {
         models: null,
         model_type: "large",
 
-        brushSize: 20,
+        brushSize: 14,
         autoFill: true,
         debug: false,
         our_version: true,
@@ -171,7 +171,7 @@ export function createDemo(divId) {
             texture.id = name; //html5 support arbitrary id:s
             texture.className = 'texture-square';
             texture.onclick = () => {
-                removeOverlayIcon();
+                // removeOverlayIcon();
                 currentTexture.style.borderColor = "white";
                 currentTexture = texture;
                 texture.style.borderColor = "rgb(245 140 44)";
@@ -216,7 +216,7 @@ export function createDemo(divId) {
                 motion.id = name; //html5 support arbitrary id:s
                 motion.className = 'texture-square';
                 motion.onclick = () => {
-                    removeOverlayIcon();
+                    // removeOverlayIcon();
                     currentMotion.style.borderColor = "white";
                     currentMotion = motion;
                     motion.style.borderColor = "rgb(245 140 44)";
@@ -240,13 +240,15 @@ export function createDemo(divId) {
             setMotionModel(params.motion_idx);
         }
 
+        //
+        // $$(".pattern-selector").forEach(sel => {
+        //     sel.onscroll = () => {
+        //         alret("scroll");
+        //         removeOverlayIcon();
+        //         sel.onscroll = null;
+        //     }
+        // });
 
-        $$(".pattern-selector").forEach(sel => {
-            sel.onscroll = () => {
-                removeOverlayIcon();
-                sel.onscroll = null;
-            }
-        });
 
     }
 
@@ -309,7 +311,8 @@ export function createDemo(divId) {
     function click(pos) {
         const [x, y] = pos;
         const [px, py] = prevPos;
-        ca.clearCircle(x, y, params.brushSize, null, params.zoom);
+        let brushSize = params.brushSize * W / 128.0
+        ca.clearCircle(x, y, brushSize, null, params.zoom);
         // ca.paint(x, y, params.brushSize, params.model, [x - px, y - py]);
         prevPos = pos;
     }
@@ -400,10 +403,11 @@ export function createDemo(divId) {
             document.getElementById("select_demo_type").innerText = "Demo Type: Vector Field Motion"
 
             $("#motion").style.display = '';
-            $("#motion_overlay_icon").style.display = '';
-            $("#motion_overlay_grad").style.display = '';
+            // $("#motion_overlay_icon").style.display = '';
+            // $("#motion_overlay_grad").style.display = '';
             $("#motion_selector_title").style.display = '';
             $("#pattern_selector_title").innerHTML = '<span>Target Appearance</span>';
+            $("#motion_selector_title").innerHTML = '<span>Target Vector Field</span>';
 
             $("#origtex").style.display = '';
             $("#texhinttext").style.display = '';
@@ -416,11 +420,18 @@ export function createDemo(divId) {
             clearPalette();
             exp_type = "VideoMotion";
             document.getElementById("select_demo_type").innerText = "Demo Type: Video Motion"
-            $("#motion").style.display = 'none';
-            $("#motion_overlay_icon").style.display = 'none';
-            $("#motion_overlay_grad").style.display = 'none';
-            $("#motion_selector_title").style.display = 'none';
+            // $("#motion").style.display = 'none';
+            // $("#motion_overlay_icon").style.display = 'none';
+            // $("#motion_overlay_grad").style.display = 'none';
+
             $("#pattern_selector_title").innerHTML = '<span>Target Appearance</span>';
+
+            $("#motion_selector_title").innerHTML = '<span></span>';
+
+            // $("#motion").style.display = 'none';
+            $("#motion_selector_title").style.display = 'contents';
+            $("#motion").style.display = 'contents';
+
 
             $("#origtex").style.display = '';
             $("#texhinttext").style.display = '';

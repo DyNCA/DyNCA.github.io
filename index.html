@@ -8,37 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DyNCA: Real-Time Dynamic Texture Synthesis Using Neural Cellular Automata</title>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-
-        gtag('config', 'G-PYVRSFMDRL');
-    </script>
 
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
           rel="stylesheet">
 
     <link rel="stylesheet" href="./static/css/bulma.min.css">
-    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
     <link rel="stylesheet" href="./static/css/index.css">
     <link rel="icon" href="./static/images/favicon.svg">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script defer src="./static/js/fontawesome.all.min.js"></script>
-    <script src="./static/js/bulma-carousel.min.js"></script>
-    <script src="./static/js/bulma-slider.min.js"></script>
-    <script src="./static/js/index.js"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,7 +28,9 @@
     <script src="twgl.min.js"></script>
     <script type="module" src="./dynca.js"></script>
     <script type="module" src="./demo.js"></script>
-
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
     <script type="text/x-mathjax-config">
   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 
@@ -56,9 +38,7 @@
 
 
     </script>
-    <script type="text/javascript"
-            src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    </script>
+
 </head>
 
 <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
@@ -286,30 +266,24 @@
                     <div class="pattern-selector-title" id="pattern_selector_title">
                         <span>Target Appearance</span>
                     </div>
-                    <div class="texture-overlay overlaygrad">
-                    </div>
-                    <div class="texture-overlay overlayicon">
-                    </div>
-                    <div id="texture" class="pattern-selector-texture">
+<!--                    <div class="texture-overlay overlaygrad">-->
+<!--                    </div>-->
+<!--                    <div class="texture-overlay overlayicon">-->
+<!--                    </div>-->
+                    <div id="texture" class="pattern-selector">
                         <!-- a hacky way to add some padding, so the fadeout doesn't cover items in the scroll. -->
                         <div class="whitespace"></div>
                     </div>
                     <div class="pattern-selector-title" id="motion_selector_title">
                         <span>Target Vector Field</span>
                     </div>
-                    <div class="motion-overlay overlaygrad" id="motion_overlay_grad">
-                    </div>
-                    <div class="motion-overlay overlayicon" id="motion_overlay_icon">
-                    </div>
-                    <div id="motion" class="pattern-selector-motion">
+<!--                    <div class="motion-overlay overlaygrad" id="motion_overlay_grad">-->
+<!--                    </div>-->
+<!--                    <div class="motion-overlay overlayicon" id="motion_overlay_icon">-->
+<!--                    </div>-->
+                    <div id="motion" class="pattern-selector">
                         <div class="whitespace"></div>
                     </div>
-                    <!--        <div id="mothint">-->
-                    <!--            <div id="origmot">-->
-                    <!--            </div>-->
-                    <!--            <span id="mothinttext"></span>-->
-                    <!--        </div>-->
-                    <!--    <div class="whitespace"></div>-->
                     <div id="texhint">
 
                         <div id="origtex">
@@ -319,31 +293,12 @@
                         <span id="mothinttext"></span>
                     </div>
 
-                    <!--    <div id="colab-hero-div">-->
-                    <!--        <a href="https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/notebooks/texture_nca_tf2.ipynb"-->
-                    <!--           class="colab-root" id="colab-hero">Try in a <span class="colab-span"><span-->
-                    <!--                class="tf-span">Notebook</span></span></a>-->
-                    <!--        <a href="https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/notebooks/texture_nca_pytorch.ipynb"-->
-                    <!--           class="colab-root" id="colab-hero">Try in a <span class="colab-span"><span-->
-                    <!--                class="pytorch-span">Notebook</span></span></a>-->
-                    <!--    </div>-->
-
-                    <!--        <div id="log-div">-->
-
-                    <!--        </div>-->
 
                 </div>
 
 
             </div>
 
-            <!--      <video id="teaser" autoplay muted loop playsinline height="100%">-->
-            <!--        <source src="https://homes.cs.washington.edu/~kpar/nerfies/videos/teaser.mp4"-->
-            <!--                type="video/mp4">-->
-            <!--      </video>-->
-            <!--            <h2 class="subtitle has-text-centered">-->
-            <!--                <span class="dnerf"> DyNCA </span> can synthesize Dynamic Textures in real-time.-->
-            <!--            </h2>-->
         </div>
     </div>
 </section>
@@ -577,62 +532,6 @@
 </section>
 
 
-<!--<section class="is-light is-small">-->
-<!--    <div class="hero-body">-->
-<!--        <div class="container">-->
-<!--            <div id="results-carousel" class="carousel results-carousel">-->
-<!--                <div class="item item-steve">-->
-<!--                    <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">-->
-<!--                        <source src="videos/real_mp4/birds.mp4"-->
-<!--                                type="video/mp4">-->
-<!--                    </video>-->
-<!--                </div>-->
-<!--                <div class="item item-chair-tp">-->
-<!--                    <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">-->
-<!--                        <source src="https://homes.cs.washington.edu/~kpar/nerfies/videos/chair-tp.mp4"-->
-<!--                                type="video/mp4">-->
-<!--                    </video>-->
-<!--                </div>-->
-<!--                <div class="item item-shiba">-->
-<!--                    <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">-->
-<!--                        <source src="https://homes.cs.washington.edu/~kpar/nerfies/videos/shiba.mp4"-->
-<!--                                type="video/mp4">-->
-<!--                    </video>-->
-<!--                </div>-->
-<!--                <div class="item item-fullbody">-->
-<!--                    <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">-->
-<!--                        <source src="https://homes.cs.washington.edu/~kpar/nerfies/videos/fullbody.mp4"-->
-<!--                                type="video/mp4">-->
-<!--                    </video>-->
-<!--                </div>-->
-<!--                <div class="item item-blueshirt">-->
-<!--                    <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">-->
-<!--                        <source src="https://homes.cs.washington.edu/~kpar/nerfies/videos/blueshirt.mp4"-->
-<!--                                type="video/mp4">-->
-<!--                    </video>-->
-<!--                </div>-->
-<!--                <div class="item item-mask">-->
-<!--                    <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">-->
-<!--                        <source src="https://homes.cs.washington.edu/~kpar/nerfies/videos/mask.mp4"-->
-<!--                                type="video/mp4">-->
-<!--                    </video>-->
-<!--                </div>-->
-<!--                <div class="item item-coffee">-->
-<!--                    <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">-->
-<!--                        <source src="https://homes.cs.washington.edu/~kpar/nerfies/videos/coffee.mp4"-->
-<!--                                type="video/mp4">-->
-<!--                    </video>-->
-<!--                </div>-->
-<!--                <div class="item item-toby">-->
-<!--                    <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">-->
-<!--                        <source src="https://homes.cs.washington.edu/~kpar/nerfies/videos/toby2.mp4"-->
-<!--                                type="video/mp4">-->
-<!--                    </video>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</section>-->
 
 
 <section class="section" id="BibTeX">

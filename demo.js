@@ -62,7 +62,7 @@ export function createDemo(divId) {
         models: null,
         model_type: "large",
 
-        brushSize: 14,
+        brushSize: 16,
         autoFill: true,
         debug: false,
         our_version: true,
@@ -72,7 +72,7 @@ export function createDemo(divId) {
 
         texture_name: "flames",
         motion_name: "0",
-        video_name: "flames",
+        video_name: "water_3",
 
 
         texture_img: null,
@@ -93,7 +93,7 @@ export function createDemo(divId) {
     // const initTexture = "interlaced_0172";
 
     const initTexture = "flames";
-    const initVideo = "flames";
+    const initVideo = "water_3";
     const initMotion = "up";
 
 
@@ -182,12 +182,24 @@ export function createDemo(divId) {
             };
             let gridBox = $('#texture');
 
-            if (texture_name == initTexture || texture_name == initVideo) {
-                currentTexture = texture;
-                texture.style.borderColor = "rgb(245 140 44)";
-                gridBox.prepend(texture);
+            if (exp_type == "VectorFieldMotion") {
+                if (texture_name == initTexture) {
+                    currentTexture = texture;
+                    texture.style.borderColor = "rgb(245 140 44)";
+                    gridBox.prepend(texture);
+
+                } else {
+                    gridBox.insertBefore(texture, gridBox.lastElementChild);
+                }
             } else {
-                gridBox.insertBefore(texture, gridBox.lastElementChild);
+                if (texture_name == initVideo) {
+                    currentTexture = texture;
+                    texture.style.borderColor = "rgb(245 140 44)";
+                    gridBox.prepend(texture);
+
+                } else {
+                    gridBox.insertBefore(texture, gridBox.lastElementChild);
+                }
             }
 
 
@@ -465,6 +477,20 @@ export function createDemo(divId) {
         $$('#alignSelect input').forEach((sel, i) => {
             sel.onchange = () => {
                 params.alignment = i
+            }
+        });
+
+        $$('#brushSelect input').forEach((sel, i) => {
+            sel.onchange = () => {
+                if (i == 0) {
+                    params.brushSize = 4;
+                } else {
+                    if (i == 1) {
+                        params.brushSize = 8;
+                    } else {
+                        params.brushSize = 16;
+                    }
+                }
             }
         });
         $$('#configSelect input').forEach((sel, i) => {

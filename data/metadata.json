@@ -1,12 +1,6 @@
 {
   "texture_names": [
     "flames",
-    "calm_water_4",
-    "ink",
-    "sea_2",
-    "smoke_2",
-    "smoke_plume_1",
-    "water_3",
     "bubbly_0101",
     "dotted_0201",
     "interlaced_0081",
@@ -44,7 +38,14 @@
     "interlaced_0191",
     "grid_0135",
     "spiralled_0042",
-    "swirly_0005"
+    "swirly_0005",
+    "calm_water_4",
+    "ink",
+    "sea_2",
+    "smoke_2",
+    "smoke_plume_1",
+    "water_3"
+
   ],
   "motion_names": [
     "right",
@@ -75,6 +76,7 @@
     "images/motion/4block.png"
   ],
   "video_names": [
+    "water_3",
     "flames",
     "birds",
     "fish",
@@ -84,7 +86,6 @@
     "smoke_plume_1",
     "calm_water_3",
     "waterfall",
-    "water_3",
     "flag_2",
     "plants",
     "snake_5",

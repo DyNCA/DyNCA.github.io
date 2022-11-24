@@ -462,7 +462,7 @@ export function createDemo(divId) {
             if (exp_type == "VectorFieldMotion") {
                 ca.paint(0, 0, 10000, params.motion_idx, [0.5, 0.5]);
             } else {
-                ca.paint(0, 0, 10000, params.texture_idx, [0.5, 0.5]);
+                ca.paint(0, 0, 10000, 0, [0.5, 0.5]);
             }
 
             ca.clearCircle(0, 0, 1000);

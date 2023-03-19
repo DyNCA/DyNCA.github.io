@@ -470,7 +470,7 @@ const PROGRAMS = {
         highp vec2 delta = vec2(0.5, 0.5) / HW;
         highp vec2 pemb = pos / HW;
         pemb = 2.0 * (pemb - 0.5 + delta);
-        pemb = rotate(u_angle) * pemb;
+        pemb = rotate(-u_angle) * pemb;
         result += pemb.y * readWeightUnscaled(p); p.y += dy;
         result += pemb.x * readWeightUnscaled(p); p.y += dy;
       

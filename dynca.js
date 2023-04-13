@@ -113,7 +113,7 @@ const PREFIX = `
         
         #ifdef OURS
             // vec2 p = clamp(pos / tensor.size, 0.0, 1.0 - 1.0 / tensor.size.y); // replicate padding
-            highp vec2 p = clamp(pos, vec2(0.0, 0.0), tensor.size - 1.0); // replicate padding
+            highp vec2 p = clamp(pos, vec2(0.0, 0.0), tensor.size - 0.5); // replicate padding
             p = p / tensor.size;
             // vec2 p = clamp(pos / tensor.size, 0.0, 1.0 - 0.0 / tensor.size.y); // replicate padding
         #else
@@ -349,12 +349,12 @@ const PROGRAMS = {
     void main() {
         vec2 xy = getOutputXY();
 
-        // #ifndef SPARSE_UPDATE
-        //   if (hash13(vec3(xy, u_seed)) > u_updateProbability) {
-        //     setOutput(vec4(0.0, 0.0, 0.0, 0.0));
-        //     return;
-        //   }
-        // #endif
+        #ifndef SPARSE_UPDATE
+          if (hash13(vec3(xy, u_seed)) > u_updateProbability) {
+            setOutput(vec4(0.0, 0.0, 0.0, 0.0));
+            return;
+          }
+        #endif
         
         #ifdef SPARSE_UPDATE
             if (scale_zero) {
@@ -417,12 +417,16 @@ const PROGRAMS = {
     
     void main() {
       vec2 xy = getOutputXY();
-      // #ifndef SPARSE_UPDATE
-      // if (hash13(vec3(xy, u_seed)) > u_updateProbability) {
-      //   setOutput(vec4(0.0, 0.0, 0.0, 0.0));
-      //   return;
-      // }
-      // #endif
+    
+    
+      #ifndef SPARSE_UPDATE
+      if (hash13(vec3(xy, u_seed)) > u_updateProbability) {
+        setOutput(vec4(0.0, 0.0, 0.0, 0.0));
+        return;
+      }
+      #endif
+      
+      
       float ch = getOutputChannel();
       if (ch >= u_output.depth4)
           return;

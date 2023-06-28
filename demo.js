@@ -363,7 +363,7 @@ export function createDemo(divId) {
             $("#origtex").style.background = "url('" + params.texture_img + "')";
             $("#origtex").style.backgroundSize = "100%100%";
             let dtd = document.createElement('p')
-            dtd.innerHTML = "Texture: " + params.texture_name
+            dtd.innerHTML = "Texture Name: <br>" + params.texture_name
             // dtd.href = "https://www.robots.ox.ac.uk/~vgg/data/dtd/"
             $("#texhinttext").innerHTML = '';
             $("#texhinttext").appendChild(dtd);
@@ -372,7 +372,7 @@ export function createDemo(divId) {
             $("#origmot").style.backgroundSize = "100%100%";
 
             let oai = document.createElement('p')
-            oai.innerHTML = "Motion: " + params.motion_name
+            oai.innerHTML = "Motion name: <br>" + params.motion_name
             // oai.href = "https://www.bukowskis.com/en/auctions/H042/96-franciska-clausen-contre-composition-composition-neoplasticiste-hommage-a-mondrian";
             $("#mothinttext").innerHTML = '';
             $("#mothinttext").appendChild(oai);

@@ -254,8 +254,9 @@
 
                         </div>
                         <div class="speed">
-                            <input type="range" id="speed" min="-4" max="4" step="1" value="0"></br>Speed: <label
+                            <input type="range" id="speed" min="-4" max="4" step="1" value="0"></br>Steps / frame: <label
                                 id="speedLabel"></label>
+
                         </div>
 
                         <div style="text-align: right;">
@@ -283,8 +284,11 @@
                         </div>
 
                         <div>
-                            <input type="range" id="rotation" min="0" max="360" step="1" value="0"></br>Rotation: <label
-                                id="rotationLabel"></label><br>
+                            <input type="range" id="rate" min="0.01" max="1.0" step="0.01" value="1.0"></br>Step Size: <label
+                                id="rateLabel"></label><br>
+
+
+
                         </div>
                         <div id='configSelect' class="button-group">
                             <label>
@@ -312,7 +316,9 @@
                             <br>Local Coordinate <br>Transformation
                         </div>
 
-                        <div class="resolution">
+                        <div>
+                            <input type="range" id="rotation" min="0" max="360" step="1" value="0"></br>Rotation: <label
+                                id="rotationLabel"></label><br>
                             <input type="range" id="resolution" min="-2" max="2" step="1" value="0"></br>Resolution:
                             <label
                                     id="resolutionLabel"></label>

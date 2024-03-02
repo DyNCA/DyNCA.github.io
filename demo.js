@@ -69,6 +69,7 @@ export function createDemo(divId) {
         zoom: 1.0,
         alignment: 0,
         rotationAngle: 0,
+        rate: 1.0,
 
         texture_name: "flames",
         motion_name: "0",
@@ -358,6 +359,9 @@ export function createDemo(divId) {
         params.rotationAngle = parseInt($('#rotation').value);
         $('#rotationLabel').innerHTML = params.rotationAngle + " deg";
 
+        params.rate = parseFloat($('#rate').value);
+        $('#rateLabel').innerHTML = params.rate.toFixed(2);
+
 
         if (exp_type == "VectorFieldMotion") {
             $("#origtex").style.background = "url('" + params.texture_img + "')";
@@ -518,6 +522,9 @@ export function createDemo(divId) {
         $('#resolution').onchange = updateUI;
         $('#resolution').oninput = updateUI;
 
+        $('#rate').onchange = updateUI;
+        $('#rate').oninput = updateUI;
+
 
         $('#zoomIn').onclick = () => {
             if (params.zoom < maxZoom) {
@@ -598,6 +605,7 @@ export function createDemo(divId) {
 
         ca.rotationAngle = params.rotationAngle;
         ca.alignment = params.alignment;
+        ca.rate = params.rate;
         // ca.hexGrid = params.hexGrid;
 
         if (!paused) {

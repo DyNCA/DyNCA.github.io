@@ -494,7 +494,7 @@ const PROGRAMS = {
     update: `
     ${defInput('u_update')}
     uniform float u_seed, u_updateProbability;
-
+    uniform float u_rate;
     varying vec2 uv;
 
     void main() {
@@ -517,7 +517,7 @@ const PROGRAMS = {
             update = u_update_readUV(uv);    
         }
       #endif
-      setOutput(state + update);
+      setOutput(state + update * u_rate);
     }`,
     vis: `
     uniform float u_raw;
@@ -775,6 +775,7 @@ export class DyNCA {
         // alert(this.shuffledMode)
 
         this.rotationAngle = 0.0;
+        this.rate = 1.0;
         this.alignment = 0;
         this.fuzz = 8.0;
         this.perceptionCircle = 0.0;
@@ -938,13 +939,14 @@ export class DyNCA {
         for (let i = 0; i < this.layers.length; ++i) {
             if (stage == 'all' || stage == `FC Layer${i + 1}`)
                 var relu = i == 0 ? true : false;
-            this.runDense(this.buf[`layer${i}`], inputBuf, this.layers[i], relu, seed);
+                var rate = i == 0 ? 1.0 : this.rate;
+            this.runDense(this.buf[`layer${i}`], inputBuf, this.layers[i], relu, seed, rate);
             inputBuf = this.buf[`layer${i}`];
         }
         if (stage == 'all' || stage == 'Stochastic Update') {
             this.runLayer(this.progs.update, this.buf.newState, {
                 u_input: this.buf.state, u_update: inputBuf,
-                u_unshuffleTex: this.unshuffleTex,
+                u_unshuffleTex: this.unshuffleTex, u_rate: this.rate,
                 u_seed: seed, u_updateProbability: this.updateProbability
             });
         }

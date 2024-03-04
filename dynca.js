@@ -344,6 +344,7 @@ const PROGRAMS = {
     }
 
     uniform float u_seed, u_updateProbability;
+    uniform float u_scale;
     uniform bool scale_zero;
     
     void main() {
@@ -387,7 +388,7 @@ const PROGRAMS = {
             #ifdef OURS
                 res = res * 8.0; // We didn't normalize the kernels
             #endif
-            setOutput(res);
+            setOutput(res / u_scale);
         
         
         } else {
@@ -395,7 +396,7 @@ const PROGRAMS = {
             #ifdef OURS
                 res = res * 8.0;  // We didn't normalize the kernels
             #endif
-            setOutput(res);
+            setOutput(res / (u_scale * u_scale));
         }
     }`,
     dense: `
@@ -776,6 +777,7 @@ export class DyNCA {
 
         this.rotationAngle = 0.0;
         this.rate = 1.0;
+        this.scale = 1.0;
         this.alignment = 0;
         this.fuzz = 8.0;
         this.perceptionCircle = 0.0;
@@ -913,7 +915,7 @@ export class DyNCA {
         if (stage == 'all' || stage == 'Perception' || stage == 'Multi-Scale Perception') {
             this.runLayer(self.progs.perception, this.buf.perception0, {
                 u_input: this.buf.state, u_angle: this.rotationAngle / 180.0 * Math.PI,
-                u_alignment: this.alignment, u_hexGrid: this.hexGrid,
+                u_alignment: this.alignment, u_hexGrid: this.hexGrid, u_scale: this.scale,
                 u_seed: seed, u_updateProbability: this.updateProbability, scale_zero: true,
             });
         }

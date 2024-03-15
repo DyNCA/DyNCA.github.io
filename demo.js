@@ -359,8 +359,8 @@ export function createDemo(divId) {
         params.rotationAngle = parseInt($('#rotation').value);
         $('#rotationLabel').innerHTML = params.rotationAngle + " deg";
 
-        params.rate = parseFloat($('#rate').value);
-        $('#rateLabel').innerHTML = params.rate.toFixed(2);
+        // params.rate = parseFloat($('#rate').value);
+        // $('#rateLabel').innerHTML = params.rate.toFixed(2);
 
 
         if (exp_type == "VectorFieldMotion") {
@@ -522,8 +522,8 @@ export function createDemo(divId) {
         $('#resolution').onchange = updateUI;
         $('#resolution').oninput = updateUI;
 
-        $('#rate').onchange = updateUI;
-        $('#rate').oninput = updateUI;
+        // $('#rate').onchange = updateUI;
+        // $('#rate').oninput = updateUI;
 
 
         $('#zoomIn').onclick = () => {
